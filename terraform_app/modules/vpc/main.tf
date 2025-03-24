@@ -69,7 +69,7 @@ resource "aws_instance" "terra" {
 
   ami                    = "ami-09fdfbe62666994aa"
   instance_type          = "t2.micro" 
-  key_name               = "mykeypair"
+  key_name               = aws_key_pair.mykeypair.key_name
   tags = {
     Name = "terra-instance-${count.index}" 
   }
