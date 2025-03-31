@@ -64,14 +64,27 @@ resource "aws_route_table_association" "main-public-1-a" {
 
 
 # Create multiple EC2 instances
-resource "aws_instance" "terra" {
-  count = 6 
+resource "aws_instance" "terra_ubu" {
+  count = 3 
+
+  ami                    = "ami-0a07501f369088e6e"
+  instance_type          = "t2.micro" 
+  key_name               = aws_key_pair.mykeypair.key_name
+  tags = {
+    Name = "terra-ubuntu-instance-${count.index}" 
+  }
+}
+
+
+# Create multiple EC2 instances
+resource "aws_instance" "terra_aws" {
+  count = 3 
 
   ami                    = "ami-09fdfbe62666994aa"
   instance_type          = "t2.micro" 
   key_name               = aws_key_pair.mykeypair.key_name
   tags = {
-    Name = "terra-instance-${count.index}" 
+    Name = "terra-aws-instance-${count.index}" 
   }
 }
 
