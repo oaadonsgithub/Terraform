@@ -1,0 +1,30 @@
+---
+- hosts: all
+  become: yes  # Run tasks as a privileged user (e.g., root)
+  tasks:
+   - name: upgrade all packages, excluding kernel
+     yum:
+      name: '*'
+      state: latest
+      exclude: 'kernel*'
+
+   - name: install docker
+     package:
+       name: docker
+       state: present
+     register: y
+
+   - name: Starting Docker Daemon
+     service:
+       name: docker
+       state: started
+       enabled: yes
+     when: y.failed == false
+
+   - name: Check disk space
+     shell: "df -h"  # Use df -h for human-readable output
+     register: disk_space_output
+
+   - name: Display disk space information
+     debug:
+       msg: "{{ disk_space_output.stdout_lines }}"
